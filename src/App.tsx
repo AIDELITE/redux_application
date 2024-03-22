@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useContactsQuery, useContactQuery, useAddContactMutation } from './services/ContactApi';
+import { useContactsQuery, useContactQuery, useAddContactMutation, useUpdateContactMutation, useDeleteContactMutation } from './services/ContactApi';
 import './App.css';
 
 function App() {
@@ -36,27 +36,35 @@ function App() {
         <AddNewContact/>
       </div>
     </div>
-    
   );
 }
 
 export const AddNewContact = ()=>{
   const [ addContact ] = useAddContactMutation();
-  const {refetch} = useContactsQuery();
+  const [ updateContact ] = useUpdateContactMutation();
+  const [ deleteContact ] = useDeleteContactMutation();
+  // const {refetch} = useContactsQuery();
   const contact = {
-  "id": "8",
-  "name": "jane doe",
-  "email": "doejane@gmail.com"
+  "id": "9",
+  "name": "will small",
+  "email": "smash@gmail.com"
   }
 
   const addHandler = async()=>{
     await addContact(contact);
-    refetch();
+  }
+  const updateHandler = async()=>{
+    await updateContact(contact);
+  }
+  const deleteHandler = async()=>{
+    await deleteContact(contact.id);
   }
 
   return (
     <>
       <button onClick={addHandler}>Add New contact</button>
+      <button onClick={updateHandler}>Update contact</button>
+      <button onClick={deleteHandler}>Remove contact</button>
     </>
   )
 }
