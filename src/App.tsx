@@ -1,9 +1,10 @@
-import React from 'react';
-import { useContactsQuery, useContactQuery } from './services/ContactApi';
+import React, {useState} from 'react';
+import { useContactsQuery, useContactQuery, useAddContactMutation } from './services/ContactApi';
 import './App.css';
 
 function App() {
   const { data, error, isFetching, isLoading, isSuccess} = useContactsQuery();
+
   return (
     <div className="App">
       <h2>Lets display something here</h2>
@@ -30,8 +31,34 @@ function App() {
           </div>
         )
       }
+
+      <div>
+        <AddNewContact/>
+      </div>
     </div>
+    
   );
+}
+
+export const AddNewContact = ()=>{
+  const [ addContact ] = useAddContactMutation();
+  const {refetch} = useContactsQuery();
+  const contact = {
+  "id": "8",
+  "name": "jane doe",
+  "email": "doejane@gmail.com"
+  }
+
+  const addHandler = async()=>{
+    await addContact(contact);
+    refetch();
+  }
+
+  return (
+    <>
+      <button onClick={addHandler}>Add New contact</button>
+    </>
+  )
 }
 
 export const ContactDetail = ({id}: {id:string})=>{
